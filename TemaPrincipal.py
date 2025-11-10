@@ -2,10 +2,11 @@ from jm.music.data import *
 from jm.JMC import *
 from jm.util import Write 
 from random import choice, uniform
+from music import *
 
-# Parámetros
+# ----------------- CONFIGURACIÓN -----------------
 TEMPO = 60.0
-CHORD_DUR = 5.0      # 4 x 5s = 20s
+CHORD_DUR = 5.0      
 MELO_VEL = 70
 
 # Progresión (D Lydian color)
@@ -14,8 +15,8 @@ Aadd9 = [A3, CS4, E4, B4]
 Gmaj7 = [G3, B3, D4, FS4]
 Em9   = [E3, G3, B3, D4, FS4]
 
-# --- Score & Parts ---
-score = Score("TemaPrincial")
+# --- Score y Parts ---
+score = Score("Tema_principal")
 score.setTempo(TEMPO)
 
 pads  = Part("Pads", SYNTH_STRINGS_1, 0)    
@@ -28,7 +29,7 @@ for chord in [Dmaj7, Aadd9, Gmaj7, Em9]:
     pPads.addChord(chord, CHORD_DUR)
 pads.addPhrase(pPads)
 
-# --- Melodía minimalista ---
+# --- Melodía  ---
 pLead = Phrase(0.0)
 mel = [
     (D5,  2.5),
@@ -45,12 +46,12 @@ for pit, dur in mel:
     n.setDynamic(MELO_VEL)
     pLead.addNote(n)
 
-# --- Estrellas (twinkles) ---
+# --- Estrellas  ---
 LOOP_LEN = 20.0
 N_TWINKLES = 16
-TWINKLE_PITCHES = [D6, E6, FS6, GS6, A6, B6, CS7, D7]  # D Lydian alto
+TWINKLE_PITCHES = [D6, E6, FS6, GS6, A6, B6, CS7, D7]  
 
-# cada destello en su Phrase con startTime propio
+
 events = []
 for _ in range(N_TWINKLES):
     start = uniform(0.0, LOOP_LEN - 0.35)
@@ -65,7 +66,6 @@ for _ in range(N_TWINKLES):
 
     events.append((start, pit, dur, vel))
 
-# eco sutil de cada twinkle
 for start, pit, dur, vel in events:
     e = Note(pit, dur * 0.9)
     e.setDynamic(int(vel * 0.55))
@@ -73,9 +73,10 @@ for start, pit, dur, vel in events:
     phE.addNote(e)
     echo.addPhrase(phE)
 
-# --- Ensamble ---
+# --- RUN ---
 score.addPart(pads)
 score.addPart(stars)
 score.addPart(echo)
 
+Play.midi(score)
 Write.midi(score, "tema_principal.mid")
