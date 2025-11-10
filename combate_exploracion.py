@@ -1,19 +1,18 @@
 from music import *
 
 # ----------------- CONFIGURACIÓN -----------------
-TITLE        = "Space House Loop"
+TITLE        = "Combate exploracion"
 TEMPO_BPM    = 124
-OUTPUT_MIDI  = "house_loop_space.mid"
+OUTPUT_MIDI  = "combate_exploracion.mid"
 
 LOOP_BARS = 10
 
 STRUCTURE = [("loop", LOOP_BARS)]
 
 TRACKS = {
-    "ATMOSPHERE": (ATMOSPHERE, 0),        # Fondo espacial
-    "LEAD":       (LEAD_5_CHARANG, 1),    # Melodía espacial
-    "BASS":       (SYNTH_BASS_1, 2),      # Bajo sintético
-    "DRUMS":      (0, 9),                 # Batería
+    "PIANO": (ELECTRIC_PIANO, 0),   
+    "BASS":  (FINGERED_BASS, 1),
+    "DRUMS": (0, 9),                
 }
 
 # ----------------- PITCH -----------------
@@ -37,6 +36,7 @@ def add_chord_stab(phrase, chord_pitches, dur):
         phrase.addNote(Note(to_midi(p), dur))
 
 # ----------------- PROGRESIÓN -----------------
+
 PROG = [
     (["F3","Ab3","C4"], "F2"),
     (["Db3","F3","Ab3"], "Db2"),
@@ -70,28 +70,16 @@ def shaker_16(bars):
     hits = set(range(16))
     return make_drum_layer(70, hits, bars)
 
-# ----------------- PATTERNS ESPACIALES -----------------
-def atmosphere_pad(bars):
-    """Pad atmosférico con notas largas"""
+# ----------------- PATTERNS -----------------
+def piano_loop(bars):
     ph = Phrase(0.0)
     prog_len = len(PROG)
     for i in range(bars):
         chords, _ = PROG[i % prog_len]
-        # Notas largas en registro alto para ambiente espacial
-        for p in chords:
-            high_note = p.replace("3","5").replace("4","5")
-            ph.addNote(Note(to_midi(high_note), WN))
-    return ph
+        
 
-def lead_melody(bars):
-    """Melodía lead espacial"""
-    ph = Phrase(0.0)
-    prog_len = len(PROG)
-    for i in range(bars):
-        chords, _ = PROG[i % prog_len]
-        # Melodía simple en registro alto
         for beat in range(4):
-            add_chord_stab(ph, [p.replace("3","5") for p in chords], SN)
+            add_chord_stab(ph, [p.replace("3","4") for p in chords], SN)
             add_notes(ph, [(REST, EN - SN)])
     return ph
 
@@ -103,6 +91,7 @@ def bass_loop(bars):
         low = root
         high = root[0]+str(int(root[1])+1) if len(root)==2 else "F3"
         
+
         add_notes(ph, [(low, EN)])
         add_notes(ph, [(REST, SN)])
         add_notes(ph, [(high, SN)])
@@ -116,10 +105,10 @@ def bass_loop(bars):
 # ----------------- SECCIÓN LOOP -----------------
 def sec_loop(bars=10):
     """
-    Loop espacial con todos los elementos
+    Loop perfecto sin intro ni outro - todos los elementos presentes
+    desde el inicio para que el loop sea transparente
     """
-    atmos = atmosphere_pad(bars)
-    lead  = lead_melody(bars)
+    piano = piano_loop(bars)
     bass  = bass_loop(bars)
     kick  = house_kick(bars)
     clap  = house_clap(bars)
@@ -128,8 +117,7 @@ def sec_loop(bars=10):
     shkr  = shaker_16(bars)
     
     return {
-        "ATMOSPHERE": [atmos],
-        "LEAD": [lead], 
+        "PIANO": [piano], 
         "BASS": [bass], 
         "DRUMS": [kick, clap, ohh, hh, shkr]
     }, bars
