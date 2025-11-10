@@ -74,56 +74,7 @@ def sfx_energy_impact():
     sc.addPart(hit); sc.addPart(ring); sc.addPart(fizz)
     save(sc, "sfx_energy_impact.mid")
 
-# 3) ALIEN SPEAK — balbuceo sintetizado (~1.4 s)
-def sfx_alien_speak():
-    sc = Score("sfx_alien_speak")
-
-    carrier = Part("carrier", VOX, 0)
-    mod     = Part("mod",     SQUARE,      1)
-    clicks  = Part("clicks",  WOODBLOCK,   2)
-
-    t = 0.0
-    
-    sylA = stepped_gliss(p_start=G5, p_end=E5, steps=6, step_beats=0.5, dyn_a=70, dyn_b=52)
-    sylA.setStartTime(t); carrier.addPhrase(sylA)
-    ckA = Phrase(t); nA = Note(C6, 0.125); nA.setDynamic(72); ckA.addNote(nA); clicks.addPhrase(ckA)
-    
-    gA = Phrase(t)
-    for _ in range(3):  # 3 tics cortos
-        m = Note(D3, 0.25); m.setDynamic(42); gA.addNote(m)
-        gA.addNote(Note(REST, 0.125))
-    mod.addPhrase(gA)
-    t = sylA.getEndTime() + 0.25  # micro-pausa
-
-    sylB = stepped_gliss(p_start=E5, p_end=A5, steps=6, step_beats=0.5, dyn_a=56, dyn_b=74)
-    sylB.setStartTime(t); carrier.addPhrase(sylB)
-    ckB = Phrase(t); nB = Note(D6, 0.125); nB.setDynamic(66); ckB.addNote(nB); clicks.addPhrase(ckB)
-    gB = Phrase(t)
-    for _ in range(2):
-        m = Note(D3, 0.25); m.setDynamic(44); gB.addNote(m)
-        gB.addNote(Note(REST, 0.125))
-    mod.addPhrase(gB)
-    t = sylB.getEndTime() + 0.125
-
-    sylC = stepped_gliss(p_start=B5, p_end=FS5, steps=5, step_beats=0.5, dyn_a=72, dyn_b=50)
-    sylC.setStartTime(t); carrier.addPhrase(sylC)
-    ckC = Phrase(t); nC = Note(E6, 0.125); nC.setDynamic(70); ckC.addNote(nC); clicks.addPhrase(ckC)
-    gC = Phrase(t)
-    for _ in range(2):
-        m = Note(D3, 0.25); m.setDynamic(42); gC.addNote(m)
-        gC.addNote(Note(REST, 0.125))
-    mod.addPhrase(gC)
-    t = sylC.getEndTime()
-
-    tail = Phrase(t + 0.125)
-    for p in (A5, B5, A5):
-        n = Note(p, 0.25); n.setDynamic(66); tail.addNote(n)
-    carrier.addPhrase(tail)
-
-    sc.addPart(carrier); sc.addPart(mod); sc.addPart(clicks)
-    save(sc, "sfx_alien_speak.mid")
-
-# 4) Pieza hallada
+# 3) Pieza hallada
 def sfx_found_piece():
     sc = Score("sfx_found_piece")
 
@@ -157,7 +108,6 @@ def sfx_found_piece():
     save(sc, "sfx_found_piece.mid")
 
 # ---- Generar todo ----
-sfx_alien_speak()
 sfx_found_piece()
 sfx_laser_zap()
 sfx_energy_impact()
