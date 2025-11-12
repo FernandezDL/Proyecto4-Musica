@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{90635ccc-04fe-47d6-8e85-96657b949a3b}">
+		<property name="assetPath">
+			<value>exploracion_enemigos.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>32.120430839002267</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{5e974310-09b9-4722-9d4b-b88a93f80c1d}</destination>
+		</relationship>
+	</object>
+</objects>
